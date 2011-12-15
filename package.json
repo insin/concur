@@ -1,0 +1,15 @@
+{
+  "name": "Concur",
+  "description": "Sugar for JavaScript inheritance",
+  "version": "0.0.1",
+  "author": "Jonathan Buchanan <jonathan.buchanan@gmail.com> (https://github.com/insin)",
+  "tags": ["inheritance", "sugar", "OOP", "extends"],
+  "main": "concur",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/insin/concur.git"
+  },
+  "devDependencies": {
+    "qunit": ">= 0.2.9"
+  }
+}
