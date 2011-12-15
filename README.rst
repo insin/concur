@@ -16,10 +16,11 @@ Grab `concur.js`_ for browsers or ``npm install concur`` for `Node.js`_
 .. _`concur.js`: https://raw.github.com/insin/concur/master/concur.js
 .. _`Node.js`: http://nodejs.org
 
-Concur.extend
-=============
+API
+===
 
 ``Concur.extend([prototypeProps[, constructorProps]])``
+-------------------------------------------------------
 
    Creates a child constructor which inherits from the call context object
    (``this``), with the given prototype and constructor properties.
@@ -28,8 +29,8 @@ Concur.extend
    ``prototypeProps.constructor`` when required.
 
    If ``Concur`` is the context object for calls to this method (i.e. if you
-   call ``Concur.extend()``, the resulting child constructor will instead
-   inherit from ``Object``.
+   call ``Concur.extend()``), the resulting child constructor will inherit
+   from ``Object``.
 
    Child constructors created with this method will have their own version of
    the ``extend`` function attached, to conveniently create further child
@@ -58,32 +59,33 @@ Concur.extend
 
    **Special arguments:**
 
-      ``prototypeProps.constructor([...])``
+   ``prototypeProps.constructor([...])``
 
-         If provided, this should be a function to be used as the child
-         constructor, otherwise a new child constructor function will be
-         created for you.
+      If provided, this should be a function to be used as the child
+      constructor, otherwise a new child constructor function will be
+      created for you.
 
-      ``prototypeProps.__meta__(prototypeProps, constructorProps)``
+   ``prototypeProps.__meta__(prototypeProps, constructorProps)``
 
-         If provided, this should be a function which takes property arguments
-         passed to the resulting child constructor's version of the ``extend``
-         method and customises them before they're used to set up inheritance.
+      If provided, this should be a function which takes property arguments
+      passed to the resulting child constructor's version of the ``extend``
+      method and customises them before they're used to set up inheritance.
 
-         See `examples.js`_ for an example of how you could use this to implement
-         Django-style declarative Models.
+      See `examples.js`_ for an example of how you could use this to implement
+      Django-style declarative Models.
 
 .. _`examples.js`: https://github.com/insin/concur/blob/master/examples.js
 
 Utilities
----------
+=========
 
 The following utility methods, which are used to implement ``Concur.extend``
 (and eachother!) are also exposed for use:
 
 ``Concur.cp(dest[, src])``
+--------------------------
 
-   The *classic* ``extend`` method -- copies own properties from ``src`` to
+   The classic ``extend`` method -- copies own properties from ``src`` to
    ``dest``, returning ``dest``.
 
    Does nothing if ``src`` is falsy, so it's safe to pass in an options
@@ -95,6 +97,7 @@ The following utility methods, which are used to implement ``Concur.extend``
       }
 
 ``Concur.inheritPrototype(childConstructor, parentConstructor)``
+----------------------------------------------------------------
 
    The classic ``inherits`` method -- puts ``parentConstructor``'s prototype in
    ``childConstructor``'s prototype chain, returning ``childConstructor``.
@@ -103,6 +106,7 @@ The following utility methods, which are used to implement ``Concur.extend``
    to ``parentConstructor``'s prototype.
 
 ``Concur.inheritFrom(parentConstructor[, prototypeProps[, constructorProps]])``
+-------------------------------------------------------------------------------
 
    Creates a child constructor based on ``parentConstructor`` and optional
    objects defining child prototype and constructor properties.
