@@ -1,5 +1,6 @@
 var qunit = require('qunit')
+  , path = require('path')
 
-qunit.run({ code: {path: '../concur.js', namespace: 'Concur'}
-          , tests: ['./concur.js']
+qunit.run({ code: {path: path.join(__dirname, '../concur.js'), namespace: 'Concur'}
+          , tests: [path.join(__dirname, 'concur.js')]
           })

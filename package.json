@@ -11,5 +11,8 @@
   },
   "devDependencies": {
     "qunit": ">= 0.2.9"
+  },
+  "scripts": {
+    "test": "node tests/tests.js"
   }
 }
