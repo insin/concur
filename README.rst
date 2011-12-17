@@ -22,57 +22,57 @@ API
 ``Concur.extend([prototypeProps[, constructorProps]])``
 -------------------------------------------------------
 
-   Creates a child constructor which inherits from the call context object
-   (``this``), with the given prototype and constructor properties.
+Creates a child constructor which inherits from the call context object
+(``this``), with the given prototype and constructor properties.
 
-   Constructor logic should be provided as a function in
-   ``prototypeProps.constructor`` when required.
+Constructor logic should be provided as a function in
+``prototypeProps.constructor`` when required.
 
-   If ``Concur`` is the context object for calls to this method (i.e. if you
-   call ``Concur.extend()``), the resulting child constructor will inherit
-   from ``Object``.
+If ``Concur`` is the context object for calls to this method (i.e. if you
+call ``Concur.extend()``), the resulting child constructor will inherit
+from ``Object``.
 
-   Child constructors created with this method will have their own version of
-   the ``extend`` function attached, to conveniently create further child
-   constructors. E.g.::
+Child constructors created with this method will have their own version of
+the ``extend`` function attached, to conveniently create further child
+constructors. E.g.::
 
-      var Widget = Concur.extend({
-        constructor: function(kwargs) {
-          kwargs = Concur.cp({attrs: null}, kwargs)
-          this.attrs = Concur.cp({}, kwargs.attrs)
-        }
-      , isHidden: false
-      })
+   var Widget = Concur.extend({
+     constructor: function(kwargs) {
+       kwargs = Concur.cp({attrs: null}, kwargs)
+       this.attrs = Concur.cp({}, kwargs.attrs)
+     }
+   , isHidden: false
+   })
 
-      var Input = Widget.extend({
-        inputType: null
-      , render: function(name, value) {
-          return DOMBuilder.build([
-            'input', { type: this.inputType , name: name , value: value}
-          ])
-        }
-      })
+   var Input = Widget.extend({
+     inputType: null
+   , render: function(name, value) {
+       return DOMBuilder.build([
+         'input', { type: this.inputType , name: name , value: value}
+       ])
+     }
+   })
 
-      var TextInput = Input.extend({
-        inputType: 'text'
-      })
+   var TextInput = Input.extend({
+     inputType: 'text'
+   })
 
-   **Special arguments:**
+**Special arguments:**
 
-   ``prototypeProps.constructor([...])``
+``prototypeProps.constructor([...])``
 
-      If provided, this should be a function to be used as the child
-      constructor, otherwise a new child constructor function will be
-      created for you.
+   If provided, this should be a function to be used as the child
+   constructor, otherwise a new child constructor function will be
+   created for you.
 
-   ``prototypeProps.__meta__(prototypeProps, constructorProps)``
+``prototypeProps.__meta__(prototypeProps, constructorProps)``
 
-      If provided, this should be a function which takes property arguments
-      passed to the resulting child constructor's version of the ``extend``
-      method and customises them before they're used to set up inheritance.
+   If provided, this should be a function which takes property arguments
+   passed to the resulting child constructor's version of the ``extend``
+   method and customises them before they're used to set up inheritance.
 
-      See `examples.js`_ for an example of how you could use this to implement
-      Django-style declarative Models.
+   See `examples.js`_ for an example of how you could use this to implement
+   Django-style declarative Models.
 
 .. _`examples.js`: https://github.com/insin/concur/blob/master/examples.js
 
@@ -85,39 +85,39 @@ The following utility methods, which are used to implement ``Concur.extend``
 ``Concur.cp(dest[, src])``
 --------------------------
 
-   The classic ``extend`` method -- copies own properties from ``src`` to
-   ``dest``, returning ``dest``.
+The classic ``extend`` method -- copies own properties from ``src`` to
+``dest``, returning ``dest``.
 
-   Does nothing if ``src`` is falsy, so it's safe to pass in an options
-   argument which is potentially ``undefined``::
+Does nothing if ``src`` is falsy, so it's safe to pass in an options
+argument which is potentially ``undefined``::
 
-      function quiz(kwargs) {
-        kwargs = Concur.cp({answer: 42, question: 'Meaning?'}, kwargs)
-        // ...
-      }
+   function quiz(kwargs) {
+     kwargs = Concur.cp({answer: 42, question: 'Meaning?'}, kwargs)
+     // ...
+   }
 
 ``Concur.inheritPrototype(childConstructor, parentConstructor)``
 ----------------------------------------------------------------
 
-   The classic ``inherits`` method -- puts ``parentConstructor``'s prototype in
-   ``childConstructor``'s prototype chain, returning ``childConstructor``.
+The classic ``inherits`` method -- puts ``parentConstructor``'s prototype in
+``childConstructor``'s prototype chain, returning ``childConstructor``.
 
-   Also adds a ``__super__`` property to ``childConstructor``, corresponding
-   to ``parentConstructor``'s prototype.
+Also adds a ``__super__`` property to ``childConstructor``, corresponding
+to ``parentConstructor``'s prototype.
 
 ``Concur.inheritFrom(parentConstructor[, prototypeProps[, constructorProps]])``
 -------------------------------------------------------------------------------
 
-   Creates a child constructor based on ``parentConstructor`` and optional
-   objects defining child prototype and constructor properties.
+Creates a child constructor based on ``parentConstructor`` and optional
+objects defining child prototype and constructor properties.
 
-   **Special arguments:**
+**Special arguments:**
 
-   ``prototypeProps.constructor([...])``
+``prototypeProps.constructor([...])``
 
-      If provided, this should be a function to be used as the child
-      constructor, otherwise a new child constructor function will be
-      created for you.
+   If provided, this should be a function to be used as the child
+   constructor, otherwise a new child constructor function will be
+   created for you.
 
 MIT License
 ===========
