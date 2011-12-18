@@ -1,6 +1,9 @@
-======
-Concur
-======
+======================
+Concur |travis_status|
+======================
+
+.. |travis_status| image:: https://secure.travis-ci.org/insin/concur.png
+   :target: http://travis-ci.org/insin/concur
 
 ``Object.extend``? **Object!**
 
