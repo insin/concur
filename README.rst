@@ -74,10 +74,10 @@ constructors. E.g.::
    passed to the resulting child constructor's version of the ``extend``
    method and customises them before they're used to set up inheritance.
 
-   See `examples.js`_ for an example of how you could use this to implement
+   See `example.js`_ for an example of how you could use this to implement
    Django-style declarative Models.
 
-.. _`examples.js`: https://github.com/insin/concur/blob/master/examples.js
+.. _`example.js`: https://github.com/insin/concur/blob/master/example.js
 
 Utilities
 =========
