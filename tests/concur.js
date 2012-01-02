@@ -24,8 +24,8 @@ QUnit.test('Concur.extend', 12, function() {
   ok(w instanceof Widget, 'Is instanceof grandparent')
   ok(w instanceof Input, 'Is instanceof parent')
   deepEqual(w.attrs, {style: 'color: red;'}, 'Instance property set by grandparent constructor')
-  equal(w.inputType, 'text', 'Parent prototype property is overriden')
-  strictEqual(w.isHidden, false, 'Grandparent prototype property is overriden')
+  equal(w.inputType, 'text', 'Parent prototype property is overridden')
+  strictEqual(w.isHidden, false, 'Grandparent prototype property is overridden')
   equal(w.render('foo', 'bar'), '<input type="text" name="foo" value="bar">', 'Parent method works')
 
   var HiddenInput = Input.extend({
@@ -37,8 +37,8 @@ QUnit.test('Concur.extend', 12, function() {
   ok(w instanceof Widget, 'Is instanceof grandparent')
   ok(w instanceof Input, 'Is instanceof parent')
   deepEqual(w.attrs, {}, 'Instance property set by grandparent constructor')
-  equal(w.inputType, 'hidden', 'Parent prototype property is overriden')
-  strictEqual(w.isHidden, true, 'Parent prototype property is overriden')
+  equal(w.inputType, 'hidden', 'Parent prototype property is overridden')
+  strictEqual(w.isHidden, true, 'Parent prototype property is overridden')
   equal(w.render('foo', 'bar'), '<input type="hidden" name="foo" value="bar">', 'Parent method works')
 })
 
