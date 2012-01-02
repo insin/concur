@@ -1,9 +1,9 @@
 ;(function(__global__, server) {
 
 /**
- * Namespace and sentinel object for initial extension.
+ * Namespace and dummy constructor for initial extension.
  */
-var Concur = {}
+function Concur() {}
 
 /**
  * Copies properties from one object to another.
@@ -88,7 +88,7 @@ function extendConstructor(prototypeProps, constructorProps) {
     this.prototype.__meta__(prototypeProps, constructorProps)
   }
 
-  var parentConstructor = (this === Concur ? Object : this)
+  var parentConstructor = this
   var childConstructor = inheritFrom(parentConstructor,
                                      prototypeProps,
                                      constructorProps)

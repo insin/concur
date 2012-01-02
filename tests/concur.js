@@ -41,3 +41,21 @@ QUnit.test('Concur.extend', 12, function() {
   strictEqual(w.isHidden, true, 'Parent prototype property is overriden')
   equal(w.render('foo', 'bar'), '<input type="hidden" name="foo" value="bar">', 'Parent method works')
 })
+
+// Regression test for sane bahaviour when a constructor is not supplied on
+// initial use of Concur.extend.
+QUnit.test('Concur.extend (without supplied constructor)', 5, function() {
+  var A = Concur.extend({
+      test: function() { return 'a' }
+    })
+    , B = A.extend({
+      test: function() { return 'b' }
+    })
+
+  var a = new A(), b = new B()
+  ok(a instanceof A, 'Is instance of self')
+  equal(a.test(), 'a', 'Prototype property is attached')
+  ok(b instanceof B, 'Is instance of self')
+  ok(b instanceof A, 'Is instance of parent')
+  equal(b.test(), 'b', 'Parent prototype property is overridden')
+})
