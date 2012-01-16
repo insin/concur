@@ -2,9 +2,8 @@ QUnit.module('Concur')
 
 QUnit.test('Concur.extend', 12, function() {
   var Widget = Concur.extend({
-    constructor: function(kwargs) {
-      kwargs = Concur.cp({attrs: null}, kwargs)
-      this.attrs = Concur.cp({}, kwargs.attrs)
+    constructor: function(attrs) {
+      this.attrs = attrs || {}
     }
   , isHidden: false
   })
@@ -20,7 +19,7 @@ QUnit.test('Concur.extend', 12, function() {
     inputType: 'text'
   })
 
-  var w = new TextInput({attrs: {style: 'color: red;'}})
+  var w = new TextInput({style: 'color: red;'})
   ok(w instanceof Widget, 'Is instanceof grandparent')
   ok(w instanceof Input, 'Is instanceof parent')
   deepEqual(w.attrs, {style: 'color: red;'}, 'Instance property set by grandparent constructor')
