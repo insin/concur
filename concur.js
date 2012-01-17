@@ -1,3 +1,7 @@
+/**
+ * Concur 0.1.1 - https://github.com/insin/concur
+ * MIT Licensed
+ */
 ;(function() {
   var modules = {}
   function require(name) {
@@ -10,6 +14,7 @@
     fn(module, exports, require)
     modules[name] = module.exports
   }
+
 require.define('isomorph/lib/is', function(module, exports, require) {
 var toString = Object.prototype.toString
 
@@ -75,11 +80,9 @@ module.exports = {
 }
 })
 
-require.define('concur', function(module, exports, require) {
-var is = require('isomorph/lib/is')
-
+require.define('isomorph/lib/object', function(module, exports, require) {
 /**
- * Copies properties from one object to another.
+ * Copies own properties from one object to another.
  */
 function extend(dest, src) {
   if (src) {
@@ -94,17 +97,25 @@ function extend(dest, src) {
 
 /**
  * Makes a constructor inherit another constructor's prototype without
- * having to actually use the constructor; also adds a __super__ property
- * for access to the inherited-from constructor's prototype.
+ * having to actually use the constructor.
  */
-function inheritPrototype(childConstructor, parentConstructor) {
+function inherits(childConstructor, parentConstructor) {
   var F = function() {}
   F.prototype = parentConstructor.prototype
   childConstructor.prototype = new F()
   childConstructor.prototype.constructor = childConstructor
-  childConstructor.__super__ = parentConstructor.prototype
   return childConstructor
 }
+
+module.exports = {
+  extend: extend
+, inherits: inherits
+}
+})
+
+require.define('concur', function(module, exports, require) {
+var is = require('isomorph/lib/is')
+  , object = require('isomorph/lib/object')
 
 /**
  * Inherits another constructor's prototype and sets its prototype and
@@ -126,19 +137,20 @@ function inheritFrom(parentConstructor, prototypeProps, constructorProps) {
   }
 
   // Inherit constructor properties
-  extend(childConstructor, parentConstructor)
+  object.extend(childConstructor, parentConstructor)
 
   // Inherit the parent's prototype
-  inheritPrototype(childConstructor, parentConstructor)
+  object.inherits(childConstructor, parentConstructor)
+  childConstructor.__super__ = parentConstructor.prototype
 
   // Add prototype properties, if given
   if (prototypeProps) {
-    extend(childConstructor.prototype, prototypeProps)
+    object.extend(childConstructor.prototype, prototypeProps)
   }
 
   // Add constructor properties, if given
   if (constructorProps) {
-    extend(childConstructor, constructorProps)
+    object.extend(childConstructor, constructorProps)
   }
 
   return childConstructor

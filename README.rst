@@ -9,14 +9,22 @@ Concur |travis_status|
 
 ``Concur.extend``? **Concur!**
 
-Sugar for JavaScript inheritance, taking two of the JavaScript Functions
-Of The Ages (``extend`` and ``inherits``) and combining their power in a
-`Backbone`_-style, infectious inheritance function.
+Sugar for JavaScript inheritance which can be shared between browsers and
+`Node.js`_, taking two of the JavaScript Functions Of The Ages (``extend``
+and ``inherits``) and combining their power in a `Backbone`_-style,
+infectious inheritance function.
 
-Grab `concur.js`_ for browsers or ``npm install concur`` for `Node.js`_
+Browsers:
+
+* `concur.js`_ or `concur.min.js`_, which export a ``Concur`` variable.
+
+Node.js::
+
+   npm install concur
 
 .. _`Backbone`: https://github.com/documentcloud/backbone
 .. _`concur.js`: https://raw.github.com/insin/concur/master/concur.js
+.. _`concur.min.js`: https://raw.github.com/insin/concur/master/concur.min.js
 .. _`Node.js`: http://nodejs.org
 
 API
@@ -40,9 +48,8 @@ the ``extend`` function attached, to conveniently create further child
 constructors. E.g.::
 
    var Widget = Concur.extend({
-     constructor: function(kwargs) {
-       kwargs = Concur.cp({attrs: null}, kwargs)
-       this.attrs = Concur.cp({}, kwargs.attrs)
+     constructor: function(attrs) {
+       this.attrs = attrs || {}
      }
    , isHidden: false
    })
