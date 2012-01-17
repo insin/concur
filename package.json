@@ -13,7 +13,8 @@
     "isomorph": "0.1.x"
   },
   "devDependencies": {
-    "qunit": "0.2.x"
+    "qunit": "0.2.x",
+    "request": "2.9.x"
   },
   "scripts": {
     "test": "node tests/tests.js"
