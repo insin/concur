@@ -79,48 +79,7 @@ constructors. E.g.::
 
 .. _`example.js`: https://github.com/insin/concur/blob/master/example.js
 
-Utilities
-=========
 
-The following utility methods, which are used to implement ``Concur.extend``
-(and eachother!) are also exposed for use:
-
-``Concur.cp(dest[, src])``
---------------------------
-
-The classic ``extend`` method -- copies own properties from ``src`` to
-``dest``, returning ``dest``.
-
-Does nothing if ``src`` is falsy, so it's safe to pass in an options
-argument which is potentially ``undefined``::
-
-   function quiz(kwargs) {
-     kwargs = Concur.cp({answer: 42, question: 'Meaning?'}, kwargs)
-     // ...
-   }
-
-``Concur.inheritPrototype(childConstructor, parentConstructor)``
-----------------------------------------------------------------
-
-The classic ``inherits`` method -- puts ``parentConstructor``'s prototype in
-``childConstructor``'s prototype chain, returning ``childConstructor``.
-
-Also adds a ``__super__`` property to ``childConstructor``, corresponding
-to ``parentConstructor``'s prototype.
-
-``Concur.inheritFrom(parentConstructor[, prototypeProps[, constructorProps]])``
--------------------------------------------------------------------------------
-
-Creates a child constructor based on ``parentConstructor`` and optional
-objects defining child prototype and constructor properties.
-
-**Special arguments:**
-
-``prototypeProps.constructor([...])``
-
-   If provided, this should be a function to be used as the child
-   constructor, otherwise a new child constructor function will be
-   created for you.
 
 MIT License
 ===========
