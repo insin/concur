@@ -4,7 +4,7 @@
   "version": "0.0.2",
   "author": "Jonathan Buchanan <jonathan.buchanan@gmail.com> (https://github.com/insin)",
   "tags": ["inheritance", "sugar", "OOP", "extend"],
-  "main": "lib/concur",
+  "main": "./lib/concur",
   "repository": {
     "type": "git",
     "url": "http://github.com/insin/concur.git"

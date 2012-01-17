@@ -77,9 +77,7 @@ constructors. E.g.::
    See `example.js`_ for an example of how you could use this to implement
    Django-style declarative Models.
 
-.. _`example.js`: https://github.com/insin/concur/blob/master/example.js
-
-
+.. _`example.js`: https://github.com/insin/concur/blob/master/examples/models.js
 
 MIT License
 ===========

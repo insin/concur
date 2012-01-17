@@ -7,7 +7,7 @@ var root = path.normalize(path.join(__dirname, '..'))
 // Config
 var config = {
   modules: {
-    'isomporph/is': 'node_modules/isomorph/is.js'
+    'isomorph/lib/is': 'node_modules/isomorph/lib/is.js'
   , 'concur': 'lib/concur.js'
   }
 , output: 'concur.js'

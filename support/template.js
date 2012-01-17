@@ -11,5 +11,5 @@
     modules[name] = module.exports
   }
 %s
-  window['concur'] = require('concur')
+  window['Concur'] = require('concur')
 })()
