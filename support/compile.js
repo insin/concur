@@ -32,8 +32,10 @@ for (var name in config.modules) {
 var template = fs.readFileSync(path.join(__dirname, 'template.js')).toString()
   , code = util.format(template, modules.join('\n'))
   , outputPath = path.join(root, config.output)
+  , headerTemplate = fs.readFileSync(path.join(__dirname, 'header.js')).toString()
+  , header = util.format(headerTemplate, require('../package.json').version)
 console.log('create: %s', outputPath)
-fs.writeFileSync(outputPath, code)
+fs.writeFileSync(outputPath, header + code)
 
 // Compress
 var compressedOutputPath = outputPath.replace('.js', '.min.js')
@@ -62,7 +64,7 @@ function processClosureCompilerResponse(err, response, body) {
               result.statistics.compressedSize, result.statistics.compressedGzipSize)
   if (!result.hasOwnProperty('errors')) {
     console.log('compressed: %s', compressedOutputPath)
-    fs.writeFileSync(compressedOutputPath, result.compiledCode)
+    fs.writeFileSync(compressedOutputPath, header + result.compiledCode)
   }
 }
 
