@@ -10,6 +10,7 @@
     fn(module, exports, require)
     modules[name] = module.exports
   }
+
 %s
   window['Concur'] = require('concur')
 })()

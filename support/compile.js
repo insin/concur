@@ -8,6 +8,7 @@ var root = path.normalize(path.join(__dirname, '..'))
 var config = {
   modules: {
     'isomorph/lib/is': 'node_modules/isomorph/lib/is.js'
+  , 'isomorph/lib/object': 'node_modules/isomorph/lib/object.js'
   , 'concur': 'lib/concur.js'
   }
 , output: 'concur.js'
