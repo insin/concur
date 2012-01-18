@@ -51,7 +51,7 @@ QUnit.test('Concur.extend', 16, function() {
 
 // Regression test for sane bahaviour when a constructor is not supplied on
 // initial use of Concur.extend.
-QUnit.test('Concur.extend (without supplied constructor)', 5, function() {
+QUnit.test('Concur.extend (without supplied constructor)', 6, function() {
   var A = Concur.extend({
       test: function() { return 'a' }
     })
@@ -61,6 +61,7 @@ QUnit.test('Concur.extend (without supplied constructor)', 5, function() {
 
   var a = new A()
     , b = new B()
+  ok(!(a instanceof Concur), 'Base objects are not instanceof Concur')
   ok(a instanceof A, 'Objects are instanceof their own constructor')
   equal(a.test(), 'a', 'Supplied prototype properties are accessible via the prototype chain')
   ok(b instanceof B, 'Objects are instanceof their own constructor')
