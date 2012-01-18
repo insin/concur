@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "qunit": "0.2.x",
-    "request": "2.9.x"
+    "buildumb": "0.0.x"
   },
   "scripts": {
     "test": "node tests/tests.js"
