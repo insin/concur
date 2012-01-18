@@ -1,5 +1,5 @@
 /**
- * Concur 0.1.1 - https://github.com/insin/concur
+ * Concur 0.1.2 - https://github.com/insin/concur
  * MIT Licensed
  */
 ;(function() {
@@ -136,12 +136,15 @@ function inheritFrom(parentConstructor, prototypeProps, constructorProps) {
     }
   }
 
-  // Inherit constructor properties
-  object.extend(childConstructor, parentConstructor)
+  // Base constructors should only have the properties they're defined with
+  if (parentConstructor !== Concur) {
+    // Inherit constructor properties
+    object.extend(childConstructor, parentConstructor)
 
-  // Inherit the parent's prototype
-  object.inherits(childConstructor, parentConstructor)
-  childConstructor.__super__ = parentConstructor.prototype
+    // Inherit the parent's prototype
+    object.inherits(childConstructor, parentConstructor)
+    childConstructor.__super__ = parentConstructor.prototype
+  }
 
   // Add prototype properties, if given
   if (prototypeProps) {
@@ -188,5 +191,6 @@ Concur.extend = function(prototypeProps, constructorProps) {
 }
 })
 
-  window['Concur'] = require('concur')
-})()
+window['Concur'] = require('concur')
+
+})();
