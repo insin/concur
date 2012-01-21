@@ -1,0 +1,32 @@
+0.1.2 / 2012-01-18
+==================
+
+* Changed: base constructors created by ``Concur.extend()`` are no longer
+  ``instanceof Concur``
+* Changed: extracted build script out into `buildumb`_
+
+0.1.1 / 2012-01-17
+==================
+
+* Changed: replaced private utility functions with dependency on `isomorph`_
+* Added exporting of isomorph to the browser build script
+
+0.1.0 / 2012-01-17
+==================
+
+* Changed: utility functions are no longer exposed
+* Changed code structure - now written as a regular Node.js module
+* Added a browser build script
+
+0.0.2 / 2012-01-02
+==================
+
+* Fixed calling ``extend()`` without providing your own constructor
+
+0.0.1 / 2011-12-15
+==================
+
+* Initial release.
+
+.. _`buildumb`: https://github.com/insin/buildumb
+.. _`isomorph`: https://github.com/insin/isomorph
