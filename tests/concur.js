@@ -69,7 +69,8 @@ QUnit.test('Concur.extend (without supplied constructor)', 6, function() {
   equal(b.test(), 'b', 'Same-named ancestor (parent) prototype properties are overridden')
 })
 
-QUnit.test('Basic __meta__ usage', 15, function() {
+// Test that __meta__ works as expected a single level of inheritance
+QUnit.test('__meta__ (flat)', 15, function() {
   var has = Function.prototype.call.bind(Object.prototype.hasOwnProperty)
 
   var Field = Concur.extend()
@@ -98,7 +99,7 @@ QUnit.test('Basic __meta__ usage', 15, function() {
       delete prototypeProps.Meta
 
       for (var name in prototypeProps) {
-        if (Object.prototype.hasOwnProperty.call(prototypeProps, name)) {
+        if (has(prototypeProps, name)) {
           var field = prototypeProps[name]
           if (field instanceof Field) {
             field.name = name
@@ -113,7 +114,7 @@ QUnit.test('Basic __meta__ usage', 15, function() {
 
   , constructor: function(props) {
       for (var prop in props)
-        if (Object.prototype.hasOwnProperty.call(props, prop))
+        if (has(props, prop))
           this[prop] = props[prop]
     }
   })
@@ -157,4 +158,89 @@ QUnit.test('Basic __meta__ usage', 15, function() {
   equal(descField.name, 'description', 'Property name set as Field name')
 
   raises(function() { Model.extend() }, Error, 'Error thrown from __meta__ due to invalid extension')
+})
+
+// Test that you have access to sufficient context that you can write __meta__
+// functions in such a way that they work "as expected" when there are multiple
+// levels of inheritance in play.
+// This will be a less than complete implementation, as we're just checking you
+// can reach everything you need to make it work.
+QUnit.test('__meta__ (deep)', 12, function() {
+  var has = Function.prototype.call.bind(Object.prototype.hasOwnProperty)
+
+  function Options() {
+    this.fields = []
+  }
+  Options.prototype.addFields = function(fields) {
+    this.fields = this.fields.concat(fields)
+  }
+
+  var Field = Concur.extend()
+
+  var Reality = Concur.extend({
+    // __meta__ is called in the context of the prototype being extended, so we
+    // should have access to the _meta of a contructor prototype which was
+    // created by extending the constructor one level up.
+    __meta__: function(prototypeProps, constructorProps) {
+      var options = new Options()
+      if (typeof this._meta != 'undefined') {
+        // We would need to do a deep copy if this was for real, but copying
+        // fields references will do for this test.
+        options.addFields(this._meta.fields)
+      }
+
+      for (var name in prototypeProps) {
+        if (has(prototypeProps, name)) {
+          var field = prototypeProps[name]
+          if (field instanceof Field) {
+            field.name = name
+            options.fields.push(field)
+            delete prototypeProps[name]
+          }
+        }
+      }
+
+      prototypeProps._meta = constructorProps._meta = options
+    }
+  })
+
+  var f1 = new Field()
+    , f2 = new Field()
+    , f3 = new Field()
+    , f4 = new Field()
+
+  var DreamLevelOne = Reality.extend({
+    field1: f1
+  })
+
+  var DreamLevelTwo = DreamLevelOne.extend({
+    field2: f2
+  })
+
+  var DreamLevelThree = DreamLevelTwo.extend({
+    field3: f3
+  })
+
+  var DreamLevelFour = DreamLevelThree.extend({
+    field4: f4
+  })
+
+  var d1 = new DreamLevelOne()
+    , d2 = new DreamLevelTwo()
+    , d3 = new DreamLevelThree()
+    , d4 = new DreamLevelFour()
+
+  ok(!has(DreamLevelOne.prototype, 'field1'), 'Field property was deleted by parent __meta__')
+  ok(!has(DreamLevelTwo.prototype, 'field2'), 'Field property was deleted by grandparent __meta__')
+  ok(!has(DreamLevelThree.prototype, 'field3'), 'Field property was deleted by ancestor __meta__')
+  ok(!has(DreamLevelFour.prototype, 'field4'), 'Field property was deleted by ancestor __meta__')
+
+  deepEqual(d1._meta.fields, [f1])
+  deepEqual(d2._meta.fields, [f1, f2])
+  deepEqual(d3._meta.fields, [f1, f2, f3])
+  deepEqual(d4._meta.fields, [f1, f2, f3, f4])
+  equal(f1.name, 'field1', 'Property name set as Field name')
+  equal(f2.name, 'field2', 'Property name set as Field name')
+  equal(f3.name, 'field3', 'Property name set as Field name')
+  equal(f4.name, 'field4', 'Property name set as Field name')
 })
