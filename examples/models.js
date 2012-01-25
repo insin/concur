@@ -3,7 +3,6 @@
  * Concur for inheritance and __meta__ for pre-processing prototype
  * properties.
  */
-
 function fmt = function(s) {
   var i = 0, args = Array.prototype.slice.call(arguments, 1)
   return s.replace(/%s/g, function() { return args[i++] })
@@ -39,8 +38,9 @@ var Model = Concur.extend({
   __meta__: function(prototypeProps, constructorProps) {
     if (typeof prototypeProps.Meta == 'undefined' ||
         typeof prototypeProps.Meta.name == 'undefined') {
-      throw new Error('Objects extending Model must provide a name via a Meta object.')
+      throw new Error('When extending Model, you must provide a name via a Meta object.')
     }
+
     var options = new ModelOptions(prototypeProps.Meta)
     delete prototypeProps.Meta
 
@@ -59,24 +59,27 @@ var Model = Concur.extend({
   }
 
 , constructor: function(props) {
-    Concur.cp(this, props)
+    for (var prop in props)
+      if (prop.hasOwnProperty(prop))
+        this[prop] = props[prop]
   }
 
 , get: function() {
     // Pretend you're looking at something which introspects this._meta
-    // and does some really clever stuff.
+    // and does some really clever stuff as per the usage in GameRelease's
+    // toString()
     var args = Array.prototype.slice.call(arguments)
     return args.pop().apply(this, args)
   }
 })
 
 var Game = Model.extend({
-  name        : CharField({max_length: 255})
-, series      : ModelRel(Series, {nullable: true, relatedName: 'games'})
-, genre       : ModelRel(Genre, {nullable: true, relatedName: 'games'})
-, publisher   : ModelRel(Company, {relatedName: 'publishedGames'})
-, developer   : ModelRel(Company, {relatedName: 'developedGames'})
-, description : TextField({blank: true})
+  name        : new CharField({max_length: 255})
+, series      : new ModelRel(Series, {nullable: true, relatedName: 'games'})
+, genre       : new ModelRel(Genre, {nullable: true, relatedName: 'games'})
+, publisher   : new ModelRel(Company, {relatedName: 'publishedGames'})
+, developer   : new ModelRel(Company, {relatedName: 'developedGames'})
+, description : new TextField({blank: true})
 
 , Meta: { name: 'Game'
         , ordering: ['name']
@@ -88,14 +91,14 @@ var Game = Model.extend({
 })
 
 var GameRelease = Model.extend({
-  game        : ModelRel(Game, {relatedName: 'releases'})
-, name        : CharField({maxLength: 255, blank: true})
-, platform    : ModelRel(Platform, {relatedName: 'gameReleases'})
-, region      : ModelRel(Region, {relatedName: 'gameReleases'})
-, publisher   : ModelRel(Company, {nullable: true, blank: true, relatedName: 'publishedReleases'})
-, date        : DateField()
-, cover       : ImageField({uploadTo: 'covers', blank: true})
-, description : TextField({blank: true})
+  game        : new ModelRel(Game, {relatedName: 'releases'})
+, name        : new CharField({maxLength: 255, blank: true})
+, platform    : new ModelRel(Platform, {relatedName: 'gameReleases'})
+, region      : new ModelRel(Region, {relatedName: 'gameReleases'})
+, publisher   : new ModelRel(Company, {nullable: true, blank: true, relatedName: 'publishedReleases'})
+, date        : new DateField()
+, cover       : new ImageField({uploadTo: 'covers', blank: true})
+, description : new TextField({blank: true})
 
 , Meta: { name: 'GameRelease'
         , verboseName: 'Game Release'
