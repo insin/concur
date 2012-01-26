@@ -50,7 +50,6 @@ constructors.
 **Special arguments:**
 
 ``prototypeProps.constructor([...])``
-
    If provided, this should be a function to be used as the child
    constructor, otherwise a new child constructor function will be
    created for you.
@@ -61,7 +60,6 @@ constructors.
    Functions passed as mixins will have their prototype properties mixed in.
 
 ``prototypeProps.__meta__(prototypeProps, constructorProps)``
-
    If provided, this function will not be used immediately, but will be called
    when further extension is done based on the constructor returned by this call
    to ``extend()``. At that point, ``__meta__()`` will be called with the
