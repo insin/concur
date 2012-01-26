@@ -39,11 +39,11 @@ Creates a child constructor which inherits from the call context object
 Constructor logic should be provided as a function --
 ``prototypeProps.constructor()`` -- when required.
 
-If ``Concur`` is the context object for calls to this method (i.e. if you
+If ``Concur`` is the context object for calls to this function (i.e. if you
 call ``Concur.extend()``), the resulting child constructor will inherit
 from ``Object``.
 
-Child constructors created with this method will have their own reference to
+Child constructors created with this function will have their own reference to
 the ``extend()`` function attached, for convenientl creation of further child
 constructors.
 
@@ -55,8 +55,7 @@ constructors.
    constructor, otherwise a new child constructor function will be
    created for you.
 
-``prototypeProps.__mixin__``
-``constructorProps.__mixin__``
+``prototypeProps.__mixin__`` or ``constructorProps.__mixin__``
    If provided, this object's properties will be mixed in to the properties
    object it's set on. Multiple mixins can be provided by passing an Array.
    Functions passed as mixins will have their prototype properties mixed in.
@@ -65,7 +64,7 @@ constructors.
 
    If provided, this function will not be used immediately, but will be called
    when further extension is done based on the constructor returned by this call
-   to ``extend()`. At that point, ``__meta__()`` will be called with the
+   to ``extend()``. At that point, ``__meta__()`` will be called with the
    property arguments passed to ``extend()`` so it can customise them before
    they're used to set up the inheriting constructor's prototype.
 
@@ -159,7 +158,7 @@ documentation::
    TextInput.prototype.inputType = 'text'
 
 To further sugar this, you could pass additional properties to the
-``extend()`` method, which will augment the prototype for you.
+``extend()`` function, which will augment the prototype for you.
 
 You might prefer to do this only with data, rather than functions, or you
 might prefer the compactness of having the entire prototype definition as
@@ -209,7 +208,7 @@ are listed below.
    the properties which were passed in.
 
    This enables you to declare constructors which are capable of modifying the
-   protypes of inheriting constructors at inheritance time.
+   prototypes of inheriting constructors at inheritance time.
 
    An example of using ``__meta__()`` to implement Django-style declarative
    models can be seen in `examples/models.js`_.
