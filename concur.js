@@ -1,5 +1,5 @@
 /**
- * Concur 0.1.2 - https://github.com/insin/concur
+ * Concur 0.1.3 - https://github.com/insin/concur
  * MIT Licensed
  */
 ;(function() {
@@ -7,15 +7,22 @@
   function require(name) {
     return modules[name]
   }
-  require.define = function(name, fn) {
+  require.define = function(rs, fn) {
     var module = {}
       , exports = {}
     module.exports = exports
     fn(module, exports, require)
-    modules[name] = module.exports
+    if (Object.prototype.toString.call(rs) == '[object Array]') {
+      for (var i = 0, l = rs.length; i < l; i++) {
+        modules[rs[i]] = module.exports
+      }
+    }
+    else {
+      modules[rs] = module.exports
+    }
   }
 
-require.define('isomorph/lib/is', function(module, exports, require) {
+require.define("isomorph/lib/is", function(module, exports, require) {
 var toString = Object.prototype.toString
 
 // Type checks
@@ -80,15 +87,24 @@ module.exports = {
 }
 })
 
-require.define('isomorph/lib/object', function(module, exports, require) {
+require.define("isomorph/lib/object", function(module, exports, require) {
 /**
- * Copies own properties from one object to another.
+ * Callbound version of Object.prototype.hasOwnProperty(), ready to be called
+ * with an object and property name.
  */
-function extend(dest, src) {
-  if (src) {
-    for (var prop in src) {
-      if (src.hasOwnProperty(prop)) {
-        dest[prop] = src[prop]
+var hasOwn = Function.prototype.call.bind(Object.prototype.hasOwnProperty)
+
+/**
+ * Copies own properties from any given objects to a destination object.
+ */
+function extend(dest) {
+  for (var i = 1, l = arguments.length, src; i < l; i++) {
+    src = arguments[i]
+    if (src) {
+      for (var prop in src) {
+        if (hasOwn(src, prop)) {
+          dest[prop] = src[prop]
+        }
       }
     }
   }
@@ -107,15 +123,83 @@ function inherits(childConstructor, parentConstructor) {
   return childConstructor
 }
 
+/**
+ * Creates an Array of [property, value] pairs from an Object.
+ */
+function items(obj) {
+  var items = []
+  for (var prop in obj) {
+    if (hasOwn(obj, prop)) {
+      items.push([prop, obj[prop]])
+    }
+  }
+  return items
+}
+
+/**
+ * Creates an Object from an Array of [property, value] pairs.
+ */
+function fromItems(items) {
+  var obj = {}
+  for (var i = 0, l = items.length, item; i < l; i++) {
+    item = items[i]
+    obj[item[0]] = item[1]
+  }
+  return obj
+}
+
+/**
+ * Creates a lookup Object from an Array, coercing each item to a String.
+ */
+function lookup(arr) {
+  var obj = {}
+  for (var i = 0, l = arr.length; i < l; i++) {
+    obj[''+arr[i]] = true
+  }
+  return obj
+}
+
 module.exports = {
-  extend: extend
+  hasOwn: hasOwn
+, extend: extend
 , inherits: inherits
+, items: items
+, fromItems: fromItems
+, lookup: lookup
 }
 })
 
-require.define('concur', function(module, exports, require) {
+require.define("concur", function(module, exports, require) {
 var is = require('isomorph/lib/is')
   , object = require('isomorph/lib/object')
+
+/**
+ * Mixes in properties from one object to another. If the source object is a
+ * Function, its prototype is mixed in instead.
+ */
+function mixin(dest, src) {
+  if (is.Function(src)) {
+    object.extend(dest, src.prototype)
+  }
+  else {
+    object.extend(dest, src)
+  }
+}
+
+/**
+ * Applies mixins specified as a __mixin__ property to the given properties
+ * object.
+ */
+function applyMixins(properties) {
+  var mixins = properties.__mixin__
+  if (!is.Array(mixins)) {
+    mixins = [mixins]
+  }
+  for (var i = 0, l = mixins.length; i < l; i++) {
+    mixin(properties, mixins[i])
+  }
+  delete properties.__mixin__
+}
 
 /**
  * Inherits another constructor's prototype and sets its prototype and
@@ -127,7 +211,7 @@ var is = require('isomorph/lib/is')
 function inheritFrom(parentConstructor, prototypeProps, constructorProps) {
   // Get or create a child constructor
   var childConstructor
-  if (prototypeProps && prototypeProps.hasOwnProperty('constructor')) {
+  if (prototypeProps && object.hasOwn(prototypeProps, 'constructor')) {
     childConstructor = prototypeProps.constructor
   }
   else {
@@ -169,11 +253,18 @@ var Concur = module.exports = function() {}
  * context, which is expected to be a constructor.
  */
 Concur.extend = function(prototypeProps, constructorProps) {
-  // If the constructor being inherited from has a __meta__ function, call
-  // it to customise prototype and constructor properties before they are
-  // used for inheritance.
-  if (typeof this.prototype != 'undefined' &&
-      typeof this.prototype.__meta__ != 'undefined') {
+  // If any mixins are specified, mix them into the property objects
+  if (prototypeProps && object.hasOwn(prototypeProps, '__mixin__')) {
+    applyMixins(prototypeProps)
+  }
+  if (constructorProps && object.hasOwn(constructorProps, '__mixin__')) {
+    applyMixins(constructorProps)
+  }
+
+  // If the constructor being inherited from has a __meta__ function somewhere
+  // in its prototype chain, call it to customise prototype and constructor
+  // properties before they're used to set up the new constructor's prototype.
+  if (typeof this.prototype.__meta__ != 'undefined') {
     // Property objects must always exist so properties can be added to
     // and removed from them.
     prototypeProps = prototypeProps || {}

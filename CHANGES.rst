@@ -1,3 +1,11 @@
+0.1.3 / 2012-01-26
+==================
+
+* Added support for a ``__mixin__`` prototype or constructor property to specify
+  an object/objects to be mixed in.
+* Changed hasOwnProperty checks to use Object.prototype.hasOwnProperty via
+  `isomorph`_'s ``object.hasOwn()``.
+
 0.1.2 / 2012-01-18
 ==================
 
