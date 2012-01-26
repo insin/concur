@@ -27,6 +27,48 @@ Node.js::
 .. _`concur.min.js`: https://raw.github.com/insin/concur/master/concur.min.js
 .. _`Node.js`: http://nodejs.org
 
+API
+===
+
+``Concur.extend([prototypeProps[, constructorProps]])``
+-------------------------------------------------------
+
+Creates a child constructor which inherits from the call context object
+(``this``), with the given prototype and constructor properties.
+
+Constructor logic should be provided as a function --
+``prototypeProps.constructor()`` -- when required.
+
+If ``Concur`` is the context object for calls to this method (i.e. if you
+call ``Concur.extend()``), the resulting child constructor will inherit
+from ``Object``.
+
+Child constructors created with this method will have their own reference to
+the ``extend()`` function attached, for convenientl creation of further child
+constructors.
+
+**Special arguments:**
+
+``prototypeProps.constructor([...])``
+
+   If provided, this should be a function to be used as the child
+   constructor, otherwise a new child constructor function will be
+   created for you.
+
+``prototypeProps.__mixin__``
+``constructorProps.__mixin__``
+   If provided, this object's properties will be mixed in to the properties
+   object it's set on. Multiple mixins can be provided by passing an Array.
+   Functions passed as mixins will have their prototype properties mixed in.
+
+``prototypeProps.__meta__(prototypeProps, constructorProps)``
+
+   If provided, this function will not be used immediately, but will be called
+   when further extension is done based on the constructor returned by this call
+   to ``extend()`. At that point, ``__meta__()`` will be called with the
+   property arguments passed to ``extend()`` so it can customise them before
+   they're used to set up the inheriting constructor's prototype.
+
 Usage
 =====
 
@@ -148,56 +190,31 @@ Manipulating Prototypes
 -----------------------
 
 The following "special" properties can be used to manipulate prototypes at
-inheritance time.
+inheritance time. The manipulations they enable are performed in the order they
+are listed below.
+
+``__mixin__``
+   If prototype or constructor properties passed to ``extend()`` have a
+   ``__mixin__`` property, its properties will be mixed in to the properties
+   object which contains it.
+
+   If a Function is given as a mixin, its prototype properties will be mixed in.
+
+   Multiple mixins can be specified by passing an Array of objects as
+   ``__mixin__``
 
 ``__meta__()``
-~~~~~~~~~~~~~~
+   If a constructor's prototype has a ``__meta__()`` property, when
+   ``extend()`` is used on that constructor, ``__meta__()`` will be called with
+   the properties which were passed in.
 
-If a constructor's prototype has a ``__meta__()`` property, when
-``extend()`` is used on that prototype, ``__meta__()`` will be called with
-the properties which were passed in.
+   This enables you to declare constructors which are capable of modifying the
+   protypes of inheriting constructors at inheritance time.
 
-This enables you to declare constructors which are capable of modifying the
-protypes of inheriting constructors at inheritance time.
+   An example of using ``__meta__()`` to implement Django-style declarative
+   models can be seen in `examples/models.js`_.
 
-An example of using ``__meta__()`` to implement Django-style declarative
-models can be seen in `examples/models.js`_.
-
-.. _`examples/models.js`: https://github.com/insin/concur/blob/master/examples/models.js
-
-API
-===
-
-``Concur.extend([prototypeProps[, constructorProps]])``
--------------------------------------------------------
-
-Creates a child constructor which inherits from the call context object
-(``this``), with the given prototype and constructor properties.
-
-Constructor logic should be provided as a function in
-``prototypeProps.constructor`` when required.
-
-If ``Concur`` is the context object for calls to this method (i.e. if you
-call ``Concur.extend()``), the resulting child constructor will inherit
-from ``Object``.
-
-Child constructors created with this method will have their own version of
-the ``extend()`` function attached, to conveniently create further child
-constructors.
-
-**Special arguments:**
-
-``prototypeProps.constructor([...])``
-
-   If provided, this should be a function to be used as the child
-   constructor, otherwise a new child constructor function will be
-   created for you.
-
-``prototypeProps.__meta__(prototypeProps, constructorProps)``
-
-   If provided, this should be a function which takes property arguments
-   passed to the resulting child constructor's version of the ``extend``
-   method and customises them before they're used to set up inheritance.
+   .. _`examples/models.js`: https://github.com/insin/concur/blob/master/examples/models.js
 
 MIT License
 ===========
