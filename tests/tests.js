@@ -1,6 +1,11 @@
-var qunit = require('qunit')
-  , path = require('path')
+var path = require('path')
 
-qunit.run({ code: {path: path.join(__dirname, '../lib/concur.js'), namespace: 'Concur'}
-          , tests: [path.join(__dirname, 'concur.js')]
-          })
+var qqunit = require('qqunit')
+
+global.Concur = require('../lib/concur')
+
+var tests = [path.join(__dirname, 'concur.js')]
+
+qqunit.Runner.run(tests, function(stats) {
+  process.exit(stats.failed)
+})

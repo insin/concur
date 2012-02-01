@@ -1,22 +1,22 @@
 {
-  "name": "Concur",
-  "description": "Sugar for JavaScript inheritance",
-  "version": "0.1.3",
-  "author": "Jonathan Buchanan <jonathan.buchanan@gmail.com> (https://github.com/insin)",
-  "tags": ["dualsided", "inheritance", "sugar", "meta", "mixin"],
-  "main": "./lib/concur",
-  "repository": {
-    "type": "git",
-    "url": "http://github.com/insin/concur.git"
-  },
-  "dependencies": {
+  "name": "Concur"
+, "description": "Sugar for JavaScript inheritance"
+, "version": "0.1.3"
+, "author": "Jonathan Buchanan <jonathan.buchanan@gmail.com> (https://github.com/insin)"
+, "tags": ["dualsided", "inheritance", "sugar", "meta", "mixin"]
+, "main": "./lib/concur"
+, "repository": {
+    "type": "git"
+  , "url": "http://github.com/insin/concur.git"
+  }
+, "dependencies": {
     "isomorph": "0.1.x"
-  },
-  "devDependencies": {
-    "qunit": "0.2.x",
-    "buildumb": "0.1.x"
-  },
-  "scripts": {
+  }
+, "devDependencies": {
+    "qqunit": "0.1.x"
+  , "buildumb": "0.1.x"
+  }
+, "scripts": {
     "test": "node tests/tests.js"
   }
 }
