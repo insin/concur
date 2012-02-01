@@ -1,3 +1,8 @@
+0.1.4 / 2012-02-01
+==================
+
+* Fixed browser build - IE7/8 object.hasOwn incompatibility fixed in isomorph.
+
 0.1.3 / 2012-01-26
 ==================
 

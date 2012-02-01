@@ -69,10 +69,14 @@ QUnit.test('Concur.extend (without supplied constructor)', 6, function() {
   equal(b.test(), 'b', 'Same-named ancestor (parent) prototype properties are overridden')
 })
 
+;(function() {
+
+var has = function(obj, prop) {
+  return Object.prototype.hasOwnProperty.call(obj, prop)
+}
+
 // Test that __meta__ works as expected a single level of inheritance
 QUnit.test('__meta__ (flat)', 15, function() {
-  var has = Function.prototype.call.bind(Object.prototype.hasOwnProperty)
-
   var Field = Concur.extend()
     , CharField = Field.extend()
     , TextField = Field.extend()
@@ -166,8 +170,6 @@ QUnit.test('__meta__ (flat)', 15, function() {
 // This will be a less than complete implementation, as we're just checking you
 // can reach everything you need to make it work.
 QUnit.test('__meta__ (deep)', 12, function() {
-  var has = Function.prototype.call.bind(Object.prototype.hasOwnProperty)
-
   function Options() {
     this.fields = []
   }
@@ -246,8 +248,6 @@ QUnit.test('__meta__ (deep)', 12, function() {
 })
 
 QUnit.test('__mixin__', 23, function() {
-  var has = Function.prototype.call.bind(Object.prototype.hasOwnProperty)
-
   var Loggable = {
     debug: function() {}
   , info: function() {}
@@ -303,3 +303,5 @@ QUnit.test('__mixin__', 23, function() {
     strictEqual(BeforeIGo[prop], Loggable[prop], '__mixin__ also works for constructorProperties')
   }
 })
+
+})()
