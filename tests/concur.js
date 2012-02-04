@@ -247,7 +247,7 @@ QUnit.test('__meta__ (deep)', 12, function() {
   equal(f4.name, 'field4', 'Property name set as Field name')
 })
 
-QUnit.test('__mixin__', 23, function() {
+QUnit.test('__mixin__', 24, function() {
   var Loggable = {
     debug: function() {}
   , info: function() {}
@@ -288,13 +288,16 @@ QUnit.test('__mixin__', 23, function() {
     strictEqual(AndAnotherThing.prototype[prop], m2[prop], '__mixin__ from second object in list')
   }
 
-  // Mixins are processed left to right
+  // Mixins are processed left to right and supplied prototype properties will
+  // override mixed in properties.
   var OneLastThing = Concur.extend({
-    __mixin__: [{a: 1, b: 2, c: 3}, {a: 4, c: 6}, {c: 5}]
+    __mixin__: [{a: 1, b: 2, c: 3}, {a: 4, c: 6, d: 9}, {c: 5}]
+  , d: 42
   })
   equal(OneLastThing.prototype.a, 4, '__mixin__ property overridden by rightmost mixin which has it')
   equal(OneLastThing.prototype.b, 2, '__mixin__ property overridden by rightmost mixin which has it')
   equal(OneLastThing.prototype.c, 5, '__mixin__ property overridden by rightmost mixin which has it')
+  equal(OneLastThing.prototype.d, 42, '__mixin__ property overridden by prototype property')
 
   // Mixins can also be specified for constructorProperties
   var BeforeIGo = Concur.extend({}, {__mixin__: Loggable})
