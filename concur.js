@@ -1,5 +1,5 @@
 /**
- * Concur 0.1.4 - https://github.com/insin/concur
+ * Concur 0.2.0 - https://github.com/insin/concur
  * MIT Licensed
  */
 ;(function() {
@@ -234,9 +234,6 @@ function inheritFrom(parentConstructor, prototypeProps, constructorProps) {
 
   // Base constructors should only have the properties they're defined with
   if (parentConstructor !== Concur) {
-    // Inherit constructor properties
-    object.extend(childConstructor, parentConstructor)
-
     // Inherit the parent's prototype
     object.inherits(childConstructor, parentConstructor)
     childConstructor.__super__ = parentConstructor.prototype
@@ -265,14 +262,6 @@ var Concur = module.exports = function() {}
  * context, which is expected to be a constructor.
  */
 Concur.extend = function(prototypeProps, constructorProps) {
-  // If any mixins are specified, mix them into the property objects
-  if (prototypeProps && object.hasOwn(prototypeProps, '__mixin__')) {
-    applyMixins(prototypeProps)
-  }
-  if (constructorProps && object.hasOwn(constructorProps, '__mixin__')) {
-    applyMixins(constructorProps)
-  }
-
   // If the constructor being inherited from has a __meta__ function somewhere
   // in its prototype chain, call it to customise prototype and constructor
   // properties before they're used to set up the new constructor's prototype.
@@ -284,9 +273,16 @@ Concur.extend = function(prototypeProps, constructorProps) {
     this.prototype.__meta__(prototypeProps, constructorProps)
   }
 
+  // If any mixins are specified, mix them into the property objects
+  if (prototypeProps && object.hasOwn(prototypeProps, '__mixin__')) {
+    applyMixins(prototypeProps)
+  }
+  if (constructorProps && object.hasOwn(constructorProps, '__mixin__')) {
+    applyMixins(constructorProps)
+  }
+
   // Set up and return the new child constructor
-  var parentConstructor = this
-  var childConstructor = inheritFrom(parentConstructor,
+  var childConstructor = inheritFrom(this,
                                      prototypeProps,
                                      constructorProps)
   childConstructor.extend = this.extend

@@ -1,20 +1,30 @@
+0.2.0 / 2012-02-04
+==================
+
+* Backwards-incompatible change to ``extend()`` -- parent constructor properties
+  are no longer copied over to the child constructor - this was undocumented
+  behaviour
+* Changed order of special properties -- ``__meta__`` is now called first so it
+  has complete control over the prototype and constructor properties which will
+  be applied to the new constructor
+
 0.1.4 / 2012-02-01
 ==================
 
-* Fixed browser build - IE7/8 object.hasOwn incompatibility fixed in isomorph.
+* Fixed browser build - IE7/8 object.hasOwn incompatibility fixed in isomorph
 
 0.1.3 / 2012-01-26
 ==================
 
 * Added support for a ``__mixin__`` prototype or constructor property to specify
-  an object/objects to be mixed in.
+  an object/objects to be mixed in
 * Changed hasOwnProperty checks to use Object.prototype.hasOwnProperty via
-  `isomorph`_'s ``object.hasOwn()``.
+  `isomorph`_'s ``object.hasOwn()``
 
 0.1.2 / 2012-01-18
 ==================
 
-* Changed: base constructors created by ``Concur.extend()`` are no longer
+* Changed: base constructors created using ``Concur.extend()`` are no longer
   ``instanceof Concur``
 * Changed: extracted build script out into `buildumb`_
 
