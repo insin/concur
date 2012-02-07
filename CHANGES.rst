@@ -1,7 +1,13 @@
+0.2.2 / 2012-02-07
+==================
+
+* Added documentation about ``__super__`` so it's officially A Thing
+* Removed an unintended ``return`` from the default constructor
+
 0.2.1 / 2012-02-04
 ==================
 
-* Fixed overriding of ``__mixin__`` properties with given prototype properties.
+* Fixed overriding of ``__mixin__`` properties with given prototype properties
 
 0.2.0 / 2012-02-04
 ==================

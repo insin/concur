@@ -1,5 +1,5 @@
 /**
- * Concur 0.2.1 - https://github.com/insin/concur
+ * Concur 0.2.2 - https://github.com/insin/concur
  * MIT Licensed
  */
 ;(function() {
@@ -230,7 +230,7 @@ function inheritFrom(parentConstructor, prototypeProps, constructorProps) {
   }
   else {
     childConstructor = function() {
-      return parentConstructor.apply(this, arguments)
+      parentConstructor.apply(this, arguments)
     }
   }
 
