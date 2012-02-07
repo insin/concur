@@ -203,10 +203,14 @@ are listed below.
    This enables you to declare constructors which are capable of modifying the
    prototypes of inheriting constructors at inheritance time.
 
-   An example of using ``__meta__`` to implement Django-style declarative models
-   can be seen in `examples/models.js`_.
+   Examples:
 
-   .. _`examples/models.js`: https://github.com/insin/concur/blob/master/examples/models.js
+   * Implementing basic Django-style declarative models: `./examples/models.js`_.
+   * Implementing inheritance of fields from all ancestor constructors and mixing
+     in fields from other constructors at the same time: `newforms/lib/forms.js`_
+
+   .. _`./examples/models.js`: https://github.com/insin/concur/blob/master/examples/models.js
+   .. _`newforms/lib/forms.js`: https://github.com/insin/newforms/blob/master/lib/forms.js#L859-911
 
 ``__mixin__``
    If a properties object passed to ``extend()`` has a ``__mixin__`` property,
