@@ -34,22 +34,22 @@ API
 -------------------------------------------------------
 
 Creates a child constructor which inherits from the call context object
-(``this``), with the given prototype and constructor properties.
+(``this``), adding the given prototype and constructor properties and
+adding ``extend()`` as a property of the new constructor for further
+extension:
 
-Constructor logic should be provided as a function --
-``prototypeProps.constructor()`` -- when required.
+* Calling ``Concur.extend()`` creates a "base" constructor, which inherits
+  from ``Object`` just like any other Function.
 
-If ``Concur`` is the context object for calls to this function (i.e. if you
-call ``Concur.extend()``), the resulting child constructor will inherit
-from ``Object``.
+* Calling ``extend()`` in the context of any other constructor creates a
+  new constructor which inherits from it.
 
-Child constructors created with this function will have their own reference to
-the ``extend()`` function attached, for convenientl creation of further child
-constructors.
+When required, constructor logic should be provided as a function --
+``prototypeProps.constructor()`` -- otherwise, a default constructor which
+calls the parent constructor with all given arguments will be created for you.
 
-Child constructors will also have a ``__super__`` property added to them,
-referencing the prototype they extend, as a convenience for accessing it when
-required.
+Child constructors also have a ``__super__`` property added to them referencing
+the prototype they extend, as a convenience for accessing it when required.
 
 **Special arguments:**
 
