@@ -47,6 +47,10 @@ Child constructors created with this function will have their own reference to
 the ``extend()`` function attached, for convenientl creation of further child
 constructors.
 
+Child constructors will also have a ``__super__`` property added to them,
+referencing the prototype they extend, as a convenience for accessing it when
+required.
+
 **Special arguments:**
 
 ``prototypeProps.constructor([...])``
