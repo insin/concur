@@ -210,7 +210,7 @@ are listed below.
      in fields from other constructors at the same time: `newforms/lib/forms.js`_
 
    .. _`./examples/models.js`: https://github.com/insin/concur/blob/master/examples/models.js
-   .. _`newforms/lib/forms.js`: https://github.com/insin/newforms/blob/master/lib/forms.js#L859-911
+   .. _`newforms/lib/forms.js`: https://github.com/insin/newforms/blob/master/lib/forms.js#L876-928
 
 ``__mixin__``
    If a properties object passed to ``extend()`` has a ``__mixin__`` property,
