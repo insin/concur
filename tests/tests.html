@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <title>Concur QUnit Tests</title>
-  <script src="http://code.jquery.com/qunit/git/qunit.js"></script>
-  <link rel="stylesheet" href="http://code.jquery.com/qunit/git/qunit.css" type="text/css" media="screen">
+  <!-- Test framework -->
+  <link rel="stylesheet" href="qunit/qunit.css">
+  <script src="qunit/qunit.js"></script>
+  <!-- Code under test -->
   <script src="../concur.js"></script>
+  <!-- Test cases -->
   <script src="concur.js"></script>
 </head>
 <body>
-  <h1 id="qunit-header">Concur</h1>
-  <h2 id="qunit-banner"></h2>
-  <div id="qunit-testrunner-toolbar"></div>
-  <h2 id="qunit-userAgent"></h2>
-  <ol id="qunit-tests"></ol>
+  <div id="qunit"></div>
   <div id="qunit-fixture"></div>
 </body>
 </html>
