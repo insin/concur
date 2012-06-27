@@ -10,10 +10,10 @@
   , "url": "http://github.com/insin/concur.git"
   }
 , "dependencies": {
-    "isomorph": "0.1.x"
+    "isomorph": "0.1.8"
   }
 , "devDependencies": {
-    "qqunit": "0.1.x"
+    "qqunit": "0.4.x"
   , "buildumb": "0.1.x"
   }
 , "scripts": {
