@@ -5,9 +5,9 @@ var buildumb = require('buildumb')
 buildumb.build({
   root: path.normalize(path.join(__dirname, '..'))
 , modules: {
-    'node_modules/isomorph/lib/is.js'     : 'isomorph/lib/is'
-  , 'node_modules/isomorph/lib/object.js' : 'isomorph/lib/object'
-  , 'lib/concur.js'                       : 'concur'
+    'node_modules/isomorph/is.js'     : 'isomorph/is'
+  , 'node_modules/isomorph/object.js' : 'isomorph/object'
+  , 'lib/concur.js'                   : 'concur'
   }
 , exports: {
     'Concur': 'concur'

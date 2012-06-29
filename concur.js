@@ -1,5 +1,5 @@
 /**
- * Concur 0.2.2 - https://github.com/insin/concur
+ * Concur 0.2.3 - https://github.com/insin/concur
  * MIT Licensed
  */
 ;(function() {
@@ -22,7 +22,7 @@
     }
   }
 
-require.define("isomorph/lib/is", function(module, exports, require) {
+require.define("isomorph/is", function(module, exports, require) {
 var toString = Object.prototype.toString
 
 // Type checks
@@ -87,7 +87,7 @@ module.exports = {
 }
 })
 
-require.define("isomorph/lib/object", function(module, exports, require) {
+require.define("isomorph/object", function(module, exports, require) {
 /**
  * Callbound version of Object.prototype.hasOwnProperty(), ready to be called
  * with an object and property name.
@@ -182,8 +182,8 @@ module.exports = {
 })
 
 require.define("concur", function(module, exports, require) {
-var is = require('isomorph/lib/is')
-  , object = require('isomorph/lib/object')
+var is = require('isomorph/is')
+  , object = require('isomorph/object')
 
 /**
  * Mixes in properties from one object to another. If the source object is a
