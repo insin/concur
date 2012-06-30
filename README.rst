@@ -1,9 +1,12 @@
-======================
-Concur |travis_status|
-======================
+====================================
+Concur |travis_status| |qunit_tests|
+====================================
 
 .. |travis_status| image:: https://secure.travis-ci.org/insin/concur.png
    :target: http://travis-ci.org/insin/concur
+
+.. |qunit_tests| image:: http://insin.github.com/img/qunit-tests.png
+   :target: http://insin.github.com/concur/tests.html
 
 ``Object.extend``? **Object!**
 
@@ -13,6 +16,9 @@ Syntactic sugar for JavaScript inheritance, which can be shared between
 browsers and `Node.js`_, taking two of the JavaScript Functions Of The
 Ages (``extend()`` and ``inherits()``) and combining their power in a
 `Backbone`_-style, infectious inheritance function.
+
+Install
+=======
 
 Browsers:
 
@@ -26,50 +32,6 @@ Node.js::
 .. _`concur.js`: https://raw.github.com/insin/concur/master/concur.js
 .. _`concur.min.js`: https://raw.github.com/insin/concur/master/concur.min.js
 .. _`Node.js`: http://nodejs.org
-
-API
-===
-
-``Concur.extend([prototypeProps[, constructorProps]])``
--------------------------------------------------------
-
-Creates a child constructor which inherits from the call context object
-(``this``), adding the given prototype and constructor properties and
-adding ``extend()`` as a property of the new constructor for further
-extension:
-
-* Calling ``Concur.extend()`` creates a "base" constructor, which inherits
-  from ``Object`` just like any other Function.
-
-* Calling ``extend()`` in the context of any other constructor creates a
-  new constructor which inherits from it.
-
-When required, constructor logic should be provided as a function --
-``prototypeProps.constructor()`` -- otherwise, a default constructor which
-calls the parent constructor with all given arguments will be created for you.
-
-Child constructors also have a ``__super__`` property added to them referencing
-the prototype they extend, as a convenience for accessing it when required.
-
-**Special arguments:**
-
-``prototypeProps.constructor([...])``
-   If provided, this function will be used as the child constructor, otherwise a
-   new child constructor function will be created for you.
-
-``prototypeProps.__meta__(prototypeProps, constructorProps)``
-   If provided, this function will not be used immediately, but will be called
-   when further extension is done based on the constructor returned by this call
-   to ``extend()``.
-
-   At that point, ``__meta__`` will be called with the property arguments passed
-   to ``extend()`` so it can customise them before they're used to set up the
-   inheriting constructor's prototype.
-
-``prototypeProps.__mixin__`` and ``constructorProps.__mixin__``
-   If provided, this object's properties will be mixed in to the properties
-   object it's set on. Multiple mixins can be provided by passing an Array.
-   Functions passed as mixins will have their prototype properties mixed in.
 
 Usage
 =====
@@ -191,34 +153,108 @@ prototypes) - for demonstration purposes, this example shows the latter::
 Manipulating Prototypes
 -----------------------
 
-The following "special" properties can be used to manipulate prototypes at
-inheritance time. The manipulations they enable are performed in the order they
-are listed below.
+The following "special" properties, or "dunder-properties" owing to the double
+underscores, can be used to manipulate prototypes at inheritance time. The
+manipulations they enable are performed in the order they are listed below.
 
 ``__meta__(prototypeProps, constructorProps)``
-   If a constructor's prototype has a ``__meta__`` property, when ``extend()``
-   is used on that constructor, ``__meta__`` will be called with the properties
-   which were passed in.
+   If a constructor's prototype properties include a dunder-meta property,
+   then when ``extend()`` is used on that constructor, dunder-meta will be
+   called with all property-defining objects which were passed in.
 
-   This enables you to declare constructors which are capable of modifying the
-   prototypes of inheriting constructors at inheritance time.
+   This enables you to declare constructors which can modify the prototypes of
+   constructors inheriting from them, at inheritance time.
 
-   Examples:
+   Contrived example::
+
+      function NutAllergyProtectionMeta(prototypeProps) {
+         var nutIndex = prototypeProps.ingredients.indexOf('nuts')
+         if (nutIndex != -1) {
+            prototypeProps.ingredients.splice(nutIndex, 1)
+         }
+      }
+
+      var Bar = Concur.extend({
+        __meta__: NutAllergyProtectionMeta
+      , eat: function() {
+          if (this.ingredients.indexOf('nuts') != -1) {
+            console.log('You eat nuts. You die.')
+          }
+          else {
+            console.log('You feel a bit dunder-meta.')
+          }
+        }
+      })
+
+      var NougatBar = Bar.extend({
+         ingredients: ['sugar', 'egg whites', 'nuts']
+      })
+
+      >>> var snack = new NougatBar()
+      >>> snack.eat()
+      You feel a bit dunder-meta.
+
+   Actual examples:
 
    * Implementing basic Django-style declarative models: `./examples/models.js`_.
-   * Implementing inheritance of fields from all ancestor constructors and mixing
-     in fields from other constructors at the same time: `newforms/lib/forms.js`_
+   * Implementing inheritance of fields from ancestor constructors and mixing in
+     fields from other constructors at the same time: `newforms/lib/forms.js`_
 
    .. _`./examples/models.js`: https://github.com/insin/concur/blob/master/examples/models.js
    .. _`newforms/lib/forms.js`: https://github.com/insin/newforms/blob/master/lib/forms.js#L876-928
 
 ``__mixin__``
-   If a properties object passed to ``extend()`` has a ``__mixin__`` property,
-   its properties will be mixed into the properties object.
+   If any properties object passed to ``extend()`` includes a dunder-mixin
+   property, it will be mixed into that properties object.
 
-   If a Function is given as a mixin, its prototype properties will be mixed in.
+   If a Function is given as a mixin, its ``prototype`` will be mixed in.
 
-   Multiple mixins can be specified by passing them as an Array.
+   Multiple mixins can be specified as an Array, in which case they will all be
+   mixed in, in the given order.
+
+API
+===
+
+``Concur.extend([prototypeProps[, constructorProps]])``
+-------------------------------------------------------
+
+Creates a child constructor which inherits from the call context object
+(``this``), adding the given prototype and constructor properties and
+adding ``extend()`` as a property of the new constructor for further
+extension:
+
+* Calling ``Concur.extend()`` creates a "base" constructor, which inherits
+  from ``Object`` just like any other Function.
+
+* Calling ``extend()`` in the context of any other constructor creates a
+  new constructor which inherits from it.
+
+When required, constructor logic should be provided as a function --
+``prototypeProps.constructor()`` -- otherwise, a default constructor which
+calls the parent constructor with all given arguments will be created for you.
+
+Child constructors also have a ``__super__`` property added to them referencing
+the prototype they extend, as a convenience for accessing it when required.
+
+**Special arguments:**
+
+``prototypeProps.constructor([...])``
+   If provided, this function will be used as the child constructor, otherwise a
+   new child constructor function will be created for you.
+
+``prototypeProps.__meta__(prototypeProps, constructorProps)``
+   If provided, this function will not be used immediately, but will be called
+   when further extension is done based on the constructor returned by this call
+   to ``extend()``.
+
+   At that point, ``__meta__`` will be called with the property arguments passed
+   to ``extend()`` so it can customise them before they're used to set up the
+   inheriting constructor's prototype.
+
+``prototypeProps.__mixin__`` and ``constructorProps.__mixin__``
+   If provided, this object's properties will be mixed in to the properties
+   object it's set on. Multiple mixins can be provided by passing an Array.
+   Functions passed as mixins will have their prototype properties mixed in.
 
 MIT License
 ===========
