@@ -7,10 +7,10 @@ buildumb.build({
 , modules: {
     'node_modules/isomorph/is.js'     : 'isomorph/is'
   , 'node_modules/isomorph/object.js' : 'isomorph/object'
-  , 'lib/concur.js'                   : 'concur'
+  , 'lib/concur.js'                   : 'Concur'
   }
 , exports: {
-    'Concur': 'concur'
+    'Concur': 'Concur'
   }
 , output: 'concur.js'
 , compress: 'concur.min.js'

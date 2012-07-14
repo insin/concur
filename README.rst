@@ -12,10 +12,12 @@ Concur |travis_status| |qunit_tests|
 
 ``Concur.extend``? **Concur!**
 
-Syntactic sugar for JavaScript inheritance, which can be shared between
-browsers and `Node.js`_, taking two of the JavaScript Functions Of The
-Ages (``extend()`` and ``inherits()``) and combining their power in a
-`Backbone`_-style, infectious inheritance function.
+Syntactic sugar for JavaScript inheritance, which takes two of the JavaScript
+Functions Of The Ages (``extend()`` and ``inherits()``), combines their power in
+a `Backbone`_-style infectious inheritance function and allows for
+inheritance-time metaprogramming and mixins for those who need them.
+
+Runs in browsers and `Node.js`_.
 
 Install
 =======
@@ -27,6 +29,10 @@ Browsers:
 Node.js::
 
    npm install concur
+
+::
+
+   var Concur = require('Concur')
 
 .. _`Backbone`: https://github.com/documentcloud/backbone
 .. _`concur.js`: https://raw.github.com/insin/concur/master/concur.js
