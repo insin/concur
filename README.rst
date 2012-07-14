@@ -207,7 +207,7 @@ manipulations they enable are performed in the order they are listed below.
      fields from other constructors at the same time: `newforms/lib/forms.js`_
 
    .. _`./examples/models.js`: https://github.com/insin/concur/blob/master/examples/models.js
-   .. _`newforms/lib/forms.js`: https://github.com/insin/newforms/blob/master/lib/forms.js#L876-928
+   .. _`newforms/lib/forms.js`: https://github.com/insin/newforms/blob/master/lib/forms.js#L891-943
 
 ``__mixin__``
    If any properties object passed to ``extend()`` includes a dunder-mixin
