@@ -12,10 +12,12 @@ Concur |travis_status| |qunit_tests|
 
 ``Concur.extend``? **Concur!**
 
-Syntactic sugar for JavaScript inheritance, which can be shared between
-browsers and `Node.js`_, taking two of the JavaScript Functions Of The
-Ages (``extend()`` and ``inherits()``) and combining their power in a
-`Backbone`_-style, infectious inheritance function.
+Syntactic sugar for JavaScript inheritance, which takes two of the JavaScript
+Functions Of The Ages (``extend()`` and ``inherits()``), combines their power in
+a `Backbone`_-style infectious inheritance function and allows for
+inheritance-time metaprogramming and mixins for those who need them.
+
+Runs in browsers and `Node.js`_.
 
 Install
 =======
@@ -27,6 +29,10 @@ Browsers:
 Node.js::
 
    npm install concur
+
+::
+
+   var Concur = require('Concur')
 
 .. _`Backbone`: https://github.com/documentcloud/backbone
 .. _`concur.js`: https://raw.github.com/insin/concur/master/concur.js
@@ -201,7 +207,7 @@ manipulations they enable are performed in the order they are listed below.
      fields from other constructors at the same time: `newforms/lib/forms.js`_
 
    .. _`./examples/models.js`: https://github.com/insin/concur/blob/master/examples/models.js
-   .. _`newforms/lib/forms.js`: https://github.com/insin/newforms/blob/master/lib/forms.js#L876-928
+   .. _`newforms/lib/forms.js`: https://github.com/insin/newforms/blob/master/lib/forms.js#L891-943
 
 ``__mixin__``
    If any properties object passed to ``extend()`` includes a dunder-mixin
