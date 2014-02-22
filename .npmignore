@@ -1,7 +1,9 @@
 .gitignore
+.jshintrc
 .travis.yml
 examples
 support
 tests
 /concur.js
 /concur.min.js
+/gulpfile.js
