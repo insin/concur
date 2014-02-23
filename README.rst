@@ -239,8 +239,12 @@ When required, constructor logic should be provided as a function --
 ``prototypeProps.constructor()`` -- otherwise, a default constructor which
 calls the parent constructor with all given arguments will be created for you.
 
-Child constructors also have a ``__super__`` property added to them referencing
+Child constructors will have a ``__super__`` property added to them referencing
 the prototype they extend, as a convenience for accessing it when required.
+
+Child constructors will also have an ``__mro__`` property added to them, which
+is a list of the constructors in their inheritance chain, with the new child
+constructor itself at the head of the list.
 
 **Special arguments:**
 
@@ -265,7 +269,7 @@ the prototype they extend, as a convenience for accessing it when required.
 MIT License
 ===========
 
-Copyright (c) 2011, Jonathan Buchanan
+Copyright (c) 2014, Jonathan Buchanan
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in

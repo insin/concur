@@ -1,3 +1,9 @@
+0.2.4 / 2014-02-23
+==================
+
+* Constructors now have an ``__mro__`` property added to them, which is a list
+  of the constructors in their inheritance chain, with themselves at the head
+
 0.2.3 / 2012-06-29
 ==================
 

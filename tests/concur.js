@@ -161,7 +161,7 @@ QUnit.test('__meta__ (flat)', 15, function() {
   equal(nameField.name, 'name', 'Property name set as Field name')
   equal(descField.name, 'description', 'Property name set as Field name')
 
-  raises(function() { Model.extend() }, Error, 'Error thrown from __meta__ due to invalid extension')
+  throws(function() { Model.extend() }, Error, 'Error thrown from __meta__ due to invalid extension')
 })
 
 // Test that you have access to sufficient context that you can write __meta__
@@ -305,6 +305,65 @@ QUnit.test('__mixin__', 24, function() {
   for (var prop in Loggable) {
     strictEqual(BeforeIGo[prop], Loggable[prop], '__mixin__ also works for constructorProperties')
   }
+})
+
+QUnit.test('__mro__', 5, function() {
+  // Constructors have an __mro__ list added to them which allows programmatic
+  // access to the inheritance chain.
+  var A = Concur.extend()
+  var B = A.extend()
+  var C = B.extend()
+  var D = C.extend()
+  deepEqual(A.__mro__, [A])
+  deepEqual(B.__mro__, [B, A])
+  deepEqual(C.__mro__, [C, B, A])
+  deepEqual(D.__mro__, [D, C, B, A])
+
+  // Use case from insin/newforms - default error messages are defined in an
+  // inheritance hierarchy and are merged together in the top level constructor
+  // to be set as an own property.
+  function extend(dest, src) {
+    for (var prop in src) {
+      if (src.hasOwnProperty(prop)) {
+        dest[prop] = src[prop]
+      }
+    }
+  }
+
+  var Field = Concur.extend({
+    defaultErrorMessages: {
+      required: 'This field is required.'
+    , invalid: 'Enter a valid value.'
+    }
+  , constructor: function() {
+      var messages = {}
+      for (var i = this.constructor.__mro__.length - 1; i >=0; i--) {
+        extend(messages,
+               this.constructor.__mro__[i].prototype.defaultErrorMessages || {})
+      }
+      this.errorMessages = messages
+    }
+  })
+
+  var IntegerField = Field.extend({
+    defaultErrorMessages: {
+      invalid: 'Enter a whole number.'
+    }
+  })
+
+  var DecimalField = IntegerField.extend({
+    defaultErrorMessages: {
+      invalid: 'Enter a number.'
+    , maxDigits: 'Ensure that there are no more than {maxDigits} digits in total.'
+    }
+  })
+
+  var f = new DecimalField()
+  deepEqual(f.errorMessages, {
+    required: 'This field is required.'
+  , invalid: 'Enter a number.'
+  , maxDigits: 'Ensure that there are no more than {maxDigits} digits in total.'
+  })
 })
 
 })()
