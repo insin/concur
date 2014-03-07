@@ -307,6 +307,26 @@ QUnit.test('__mixin__', 24, function() {
   }
 })
 
+QUnit.test('__mixin__ regression for issue #2', function() {
+  var mixinObj = {constructor: function() {}}
+  var A = Concur.extend({
+    __mixin__: mixinObj
+  , aProp: true
+  })
+  ok(A !== mixinObj.constructor, 'A .constructor function in a __mixin__ object should not become the new constructor')
+  ok(typeof mixinObj.constructor.prototype.aProp == 'undefined', 'Prototype properties should not get copied to a mixin constructor')
+
+  var B = Concur.extend({
+    constructor: function B() {}
+  })
+  var C = Concur.extend({
+    __mixin_: B
+  , cProp: true
+  })
+  ok(C !== B.prototype.constructor, 'A .constructor function in a __mixin__ constructor should not become the new constructor')
+  ok(typeof B.prototype.cProp == 'undefined', 'Prototype properties should not get copied to a mixin constructor')
+})
+
 QUnit.test('__mro__', 5, function() {
   // Constructors have an __mro__ list added to them which allows programmatic
   // access to the inheritance chain.

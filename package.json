@@ -1,7 +1,7 @@
 {
   "name": "Concur",
   "description": "Sugar for JavaScript inheritance",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "author": "Jonathan Buchanan <jonathan.buchanan@gmail.com> (https://github.com/insin)",
   "tags": [
     "isomorphic",
