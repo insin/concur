@@ -1,3 +1,9 @@
+0.3.0 / 2014-11-11
+==================
+
+* **Breaking:** Renamed ``__mixin__`` to ``__mixins__``
+* Removed dependency on insin/isomorph.
+
 0.2.5 / 2014-03-07
 ==================
 
