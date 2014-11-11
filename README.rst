@@ -209,14 +209,10 @@ manipulations they enable are performed in the order they are listed below.
    .. _`./examples/models.js`: https://github.com/insin/concur/blob/master/examples/models.js
    .. _`newforms/lib/forms.js`: https://github.com/insin/newforms/blob/master/lib/forms.js#L891-943
 
-``__mixin__``
-   If any properties object passed to ``extend()`` includes a dunder-mixin
-   property, it will be mixed into that properties object.
-
-   If a Function is given as a mixin, its ``prototype`` will be mixed in.
-
-   Multiple mixins can be specified as an Array, in which case they will all be
-   mixed in, in the given order.
+``__mixins__``
+   If any properties object passed to ``extend()`` includes a dunder-mixins
+   Array, each of its contents will be mixed into that properties object in the
+   given order.
 
 API
 ===
@@ -261,10 +257,9 @@ constructor itself at the head of the list.
    to ``extend()`` so it can customise them before they're used to set up the
    inheriting constructor's prototype.
 
-``prototypeProps.__mixin__`` and ``constructorProps.__mixin__``
-   If provided, this object's properties will be mixed in to the properties
-   object it's set on. Multiple mixins can be provided by passing an Array.
-   Functions passed as mixins will have their prototype properties mixed in.
+``prototypeProps.__mixins__`` and ``constructorProps.__mixins__``
+   If provided, the contents of this Array will be mixed in to the properties
+   object it's set on, in the given order.
 
 MIT License
 ===========

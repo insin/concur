@@ -247,7 +247,7 @@ QUnit.test('__meta__ (deep)', 12, function() {
   equal(f4.name, 'field4', 'Property name set as Field name')
 })
 
-QUnit.test('__mixin__', 24, function() {
+QUnit.test('__mixins__', 24, function() {
   var Loggable = {
     debug: function() {}
   , info: function() {}
@@ -256,64 +256,64 @@ QUnit.test('__mixin__', 24, function() {
   }
 
   var Thing = Concur.extend({
-    __mixin__: Loggable
+    __mixins__: [Loggable]
   })
 
   // Simple mixin
-  ok(!has(Thing.prototype, '__mixin__'), '__mixin__ itself is not added to the prototype')
+  ok(!has(Thing.prototype, '__mixins__'), '__mixins__ itself is not added to the prototype')
   for (var prop in Loggable) {
-    strictEqual(Thing.prototype[prop], Loggable[prop], '__mixin__ properties from Object added to prototype')
+    strictEqual(Thing.prototype[prop], Loggable[prop], '__mixins__ properties from Object added to prototype')
   }
 
   // Functions can be passed as mixins, in which case their prototype properties
   // will be mixed in if there are any. Otherwise, the function's own properties
   // will be mixed in.
   var AnotherThing = Concur.extend({
-    __mixin__: Thing
+    __mixins__: [Thing]
   })
   for (var prop in Loggable) {
-    strictEqual(AnotherThing.prototype[prop], Loggable[prop], '__mixin__ properties from Constructor.prototype added to prototype')
+    strictEqual(AnotherThing.prototype[prop], Loggable[prop], '__mixins__ properties from Constructor.prototype added to prototype')
   }
 
   // List of mixins
   var m1 = { a: 1, b: 2, c: 3 }
     , m2 = { d: 4, e: 5, f: 6 }
   var AndAnotherThing = Concur.extend({
-    __mixin__: [m1, m2]
+    __mixins__: [m1, m2]
   })
   for (var prop in m1) {
-    strictEqual(AndAnotherThing.prototype[prop], m1[prop], '__mixin__ from first object in list')
+    strictEqual(AndAnotherThing.prototype[prop], m1[prop], '__mixins__ from first object in list')
   }
   for (var prop in m2) {
-    strictEqual(AndAnotherThing.prototype[prop], m2[prop], '__mixin__ from second object in list')
+    strictEqual(AndAnotherThing.prototype[prop], m2[prop], '__mixins__ from second object in list')
   }
 
   // Mixins are processed left to right and supplied prototype properties will
   // override mixed in properties.
   var OneLastThing = Concur.extend({
-    __mixin__: [{a: 1, b: 2, c: 3}, {a: 4, c: 6, d: 9}, {c: 5}]
+    __mixins__: [{a: 1, b: 2, c: 3}, {a: 4, c: 6, d: 9}, {c: 5}]
   , d: 42
   })
-  equal(OneLastThing.prototype.a, 4, '__mixin__ property overridden by rightmost mixin which has it')
-  equal(OneLastThing.prototype.b, 2, '__mixin__ property overridden by rightmost mixin which has it')
-  equal(OneLastThing.prototype.c, 5, '__mixin__ property overridden by rightmost mixin which has it')
-  equal(OneLastThing.prototype.d, 42, '__mixin__ property overridden by prototype property')
+  equal(OneLastThing.prototype.a, 4, '__mixins__ property overridden by rightmost mixin which has it')
+  equal(OneLastThing.prototype.b, 2, '__mixins__ property overridden by rightmost mixin which has it')
+  equal(OneLastThing.prototype.c, 5, '__mixins__ property overridden by rightmost mixin which has it')
+  equal(OneLastThing.prototype.d, 42, '__mixins__ property overridden by prototype property')
 
   // Mixins can also be specified for constructorProperties
-  var BeforeIGo = Concur.extend({}, {__mixin__: Loggable})
-  ok(!has(BeforeIGo, '__mixin__'), '__mixin__ itself is not added to the constructor')
+  var BeforeIGo = Concur.extend({}, {__mixins__: [Loggable]})
+  ok(!has(BeforeIGo, '__mixins__'), '__mixins__ itself is not added to the constructor')
   for (var prop in Loggable) {
-    strictEqual(BeforeIGo[prop], Loggable[prop], '__mixin__ also works for constructorProperties')
+    strictEqual(BeforeIGo[prop], Loggable[prop], '__mixins__ also works for constructorProperties')
   }
 })
 
-QUnit.test('__mixin__ regression for issue #2', function() {
+QUnit.test('__mixins__ regression for issue #2', function() {
   var mixinObj = {constructor: function() {}}
   var A = Concur.extend({
-    __mixin__: mixinObj
+    __mixins__: [mixinObj]
   , aProp: true
   })
-  ok(A !== mixinObj.constructor, 'A .constructor function in a __mixin__ object should not become the new constructor')
+  ok(A !== mixinObj.constructor, 'A .constructor function in a __mixins__ object should not become the new constructor')
   ok(typeof mixinObj.constructor.prototype.aProp == 'undefined', 'Prototype properties should not get copied to a mixin constructor')
 
   var B = Concur.extend({
@@ -323,7 +323,7 @@ QUnit.test('__mixin__ regression for issue #2', function() {
     __mixin_: B
   , cProp: true
   })
-  ok(C !== B.prototype.constructor, 'A .constructor function in a __mixin__ constructor should not become the new constructor')
+  ok(C !== B.prototype.constructor, 'A .constructor function in a __mixins__ constructor should not become the new constructor')
   ok(typeof B.prototype.cProp == 'undefined', 'Prototype properties should not get copied to a mixin constructor')
 })
 
