@@ -16,7 +16,6 @@
     "url": "http://github.com/insin/concur.git"
   },
   "dependencies": {
-    "isomorph": "0.2.x"
   },
   "devDependencies": {
     "browserify": "~3.30.1",
