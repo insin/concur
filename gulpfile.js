@@ -1,15 +1,16 @@
+var browserify = require('browserify')
 var gulp = require('gulp')
+var source = require('vinyl-source-stream')
 
-var browserify = require('gulp-browserify')
-var concat = require('gulp-concat')
 var header = require('gulp-header')
 var jshint = require('gulp-jshint')
 var plumber = require('gulp-plumber')
 var rename = require('gulp-rename')
+var streamify = require('gulp-streamify')
 var uglify = require('gulp-uglify')
 var gutil = require('gulp-util')
 
-var pkg = require('./package.json');
+var pkg = require('./package.json')
 var srcHeader = '/**\n\
  * Concur <%= pkg.version %> - https://github.com/insin/concur\n\
  * MIT Licensed\n\
@@ -30,24 +31,24 @@ gulp.task('lint', function() {
 })
 
 gulp.task('build-js', ['lint'], function(){
-  var stream = gulp.src(jsEntryPoint, {read: false})
-    .pipe(plumber())
-    .pipe(browserify({
-      debug: !gutil.env.production
-    , standalone: standalone
-    }))
+  var b = browserify(jsEntryPoint, {
+    debug: !gutil.env.production
+  , standalone: standalone
+  })
+
+  var stream = b.bundle()
     .on('error', function(e) {
       console.error(e)
     })
-    .pipe(concat(distFile))
-    .pipe(header(srcHeader, {pkg: pkg}))
+    .pipe(source(distFile))
+    .pipe(streamify(header(srcHeader, {pkg: pkg})))
     .pipe(gulp.dest(distDir))
 
   if (gutil.env.production) {
     stream = stream
       .pipe(rename(minDistFile))
-      .pipe(uglify())
-      .pipe(header(srcHeader, {pkg: pkg}))
+      .pipe(streamify(uglify()))
+      .pipe(streamify(header(srcHeader, {pkg: pkg})))
       .pipe(gulp.dest(distDir))
   }
 
@@ -58,6 +59,4 @@ gulp.task('watch', function() {
   gulp.watch(jsPath, ['build-js'])
 })
 
-gulp.task('default', function() {
-  gulp.start('build-js', 'watch')
-})
+gulp.task('default', ['build-js', 'watch'])
