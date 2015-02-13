@@ -15,10 +15,10 @@ Browser bundles export a global `Concur` variable.
 * [concur.js](https://raw.github.com/insin/concur/master/concur.js)
 * [concur.min.js](https://raw.github.com/insin/concur/master/concur.min.js)
 
-Node.js::
+Node.js:
 
 ```
-npm install concur
+npm install Concur
 ```
 ```javascript
 var Concur = require('Concur')
